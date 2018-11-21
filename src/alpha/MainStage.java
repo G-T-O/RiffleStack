@@ -10,6 +10,8 @@ import specifications.StartViewerService;
 import specifications.ViewerService;
 import specifications.AlgorithmService;
 
+import java.net.URISyntaxException;
+
 import data.Data;
 import engine.Engine;
 import userInterface.StartViewer;
@@ -31,6 +33,10 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Button;
 
+
+import javafx.scene.media.AudioClip ;
+
+
 public class MainStage extends Application{
 	  //---HARD-CODED-PARAMETERS---//
 	  private static String fileName = HardCodedParameters.defaultParamFileName;
@@ -43,7 +49,7 @@ public class MainStage extends Application{
 	  private static AnimationTimer timer;
 	  private static Stage stage;
 	  private static Button btn=new Button("Click Here");
-	  
+	  private static int count;
 
 	  public MainStage(Stage stage) {
 		  
@@ -119,13 +125,25 @@ public class MainStage extends Application{
 		        scene.setRoot(((Viewer)viewer).getPanel());
 		        switch (data.getSoundEffect()){
 		          case MonsterDestroyed:
-		            new MediaPlayer(new Media(getHostServices().getDocumentBase()+"src/sound/waterdrip.mp3")).play();
+		          //  new MediaPlayer(new Media(getHostServices().getDocumentBase()+"src/sound/waterdrip.mp3")).play();
 		            break;
 		          case HeroesGotHit:
-		            new MediaPlayer(new Media(getHostServices().getDocumentBase()+"src/sound/waterdrip.mp3")).play();
+		        	 Media media = null;
+					try {
+						media = new Media(getClass().getResource("/sound/shoot/laser1.mp3").toURI().toString());
+					} catch (URISyntaxException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					};
+		        	//MediaPlayer mediaPlayer = new MediaPlayer( media );                        
+		        	// mediaPlayer.play();
+		            //new MediaPlayer(new Media(getHostServices().getDocumentBase()+"src/sound/waterdrip.mp3")).play();
 		            break;
 		          case HeroesShoot:
-		        	  new  MediaPlayer(new Media(getHostServices().getDocumentBase()+"src/sound/shoot/laser1.mp3")).play();
+		        	//  new  MediaPlayer(new Media(getHostServices().getDocumentBase()+"src/sound/shoot/laser1.mp3")).play();
+
+		        	//  AudioClip plonkSound = new AudioClip("C:/Users/axetel/eclipse-workspace/projet071120188/src/sound/shoot/laser1.mp3");
+		        	 // plonkSound.play();
 		          default:
 		            break;
 		        }

@@ -43,7 +43,7 @@ public class Main extends Application{
 
   @Override public void start(Stage stage) {
 	 
-	//  new MediaPlayer(new Media(getHostServices().getDocumentBase()+"src/sound/song.mp3")).play();
+	  new MediaPlayer(new Media(getHostServices().getDocumentBase()+"src/sound/song.mp3")).play();
 
     final Scene scene = new Scene(((StartViewer)startViewer).getPanel());
     scene.setFill(Color.CORNFLOWERBLUE);
@@ -52,6 +52,8 @@ public class Main extends Application{
     stage.setHeight(HardCodedParameters.defaultHeight);
     stage.show();
     stg=stage;
+	 // mainStage = new MainStage(stage);
+	 // mainStage.StartMainStage();
   }
 
   //---ARGUMENTS---//

@@ -12,6 +12,7 @@
 .buildpath
 .classpath
 .project
+.class
 
 # Logging
 *.log
