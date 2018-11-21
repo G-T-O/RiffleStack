@@ -1,4 +1,5 @@
 package userInterface;
+
 import tools.HardCodedParameters;
 
 import specifications.ViewerService;
@@ -18,64 +19,59 @@ import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 
-public class StartViewer  implements ViewerService, RequireReadService{
-  private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
-  private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
-                              defaultMainHeight=HardCodedParameters.defaultHeight;
-  private ReadService data;
+public class StartViewer implements ViewerService, RequireReadService {
+	private static final int spriteSlowDownRate = HardCodedParameters.spriteSlowDownRate;
+	private static final double defaultMainWidth = HardCodedParameters.defaultWidth,
+			defaultMainHeight = HardCodedParameters.defaultHeight;
+	private ReadService data;
+	private Button btn;
+	private Group panel;
+	private Text greets;
+	private double xShrink, yShrink, shrink;
 
+	public StartViewer() {
+	}
 
-  private double xShrink,yShrink,shrink;
+	@Override
+	public void bindReadService(ReadService service) {
+		data = service;
+	}
 
-  public StartViewer(){}
-  
-  @Override
-  public void bindReadService(ReadService service){
-    data=service;
-  }
+	@Override
+	public void init() {
+		xShrink = 1;
+		yShrink = 1;
+	}
 
-  @Override
-  public void init(){
-    xShrink=1;
-    yShrink=1;
-  }
+	@Override
+	public Parent getPanel() {
+		shrink = Math.min(xShrink, yShrink);
+		// Yucky hard-conding
+		greets = new Text(-0.1 * shrink * defaultMainHeight + .5 * shrink * defaultMainWidth,
+				-0.1 * shrink * 1 + shrink * 40, "Bienvenue");
+		greets.setFont(new Font(.05 * shrink * defaultMainHeight));
 
-  @Override
-  public Parent getPanel(){
-    shrink=Math.min(xShrink,yShrink);
-    //Yucky hard-conding
+		btn = new Button("Sign in");
+		btn.setLayoutX(300);
+		btn.setLayoutY(200);
+		btn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Main.runMainStage();
+			}
+		});
+		panel = new Group();
+		panel.getChildren().addAll(greets, btn);
+		return panel;
+	}
 
+	@Override
+	public void setMainWindowWidth(double width) {
+		xShrink = width / defaultMainWidth;
+	}
 
-    Text greets = new Text(-0.1*shrink*defaultMainHeight+.5*shrink*defaultMainWidth,
-    						-0.1*shrink*1+shrink*40,
-                           "Bienvenue");
-    greets.setFont(new Font(.05*shrink*defaultMainHeight));
-
-    Button btn = new Button("Sign in");
-    btn.setLayoutX(300);
-    btn.setLayoutY(200);
-    btn.setOnAction(new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-           Main.runMainStage();
-        }
-    });
-    Group panel = new Group();
-    panel.getChildren().addAll(greets,btn);
-
-
-    return panel;
-  }
-
-  @Override
-  public void setMainWindowWidth(double width){
-    xShrink=width/defaultMainWidth;
-  }
-  
-  @Override
-  public void setMainWindowHeight(double height){
-    yShrink=height/defaultMainHeight;
-  }
+	@Override
+	public void setMainWindowHeight(double height) {
+		yShrink = height / defaultMainHeight;
+	}
 }
-
-

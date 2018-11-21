@@ -3,17 +3,25 @@ package data.ia;
 import specifications.CharacterService;
 import tools.Position;
 
-public class SmallMonster extends Personnage{
-	
-	public SmallMonster(Position p){ position=p; }
-	
-	@Override
-	public Position getPosition() {return position;}
+public class SmallMonster extends Personnage {
+
+	public SmallMonster(Position p) {
+		position = p;
+	}
 
 	@Override
-	public CharacterService.MOVE getAction() {return CharacterService.MOVE.LEFT;}
+	public Position getPosition() {
+		return position;
+	}
 
 	@Override
-	public void setPosition(Position p) {position = p;}
+	public CharacterService.MOVE getAction() {
+		return CharacterService.MOVE.LEFT;
+	}
+
+	@Override
+	public void setPosition(Position p) {
+		position = p;
+	}
 
 }
