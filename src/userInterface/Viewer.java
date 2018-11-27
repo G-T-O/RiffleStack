@@ -30,21 +30,15 @@ public class Viewer implements ViewerService, RequireReadService{
   private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
                               defaultMainHeight=HardCodedParameters.defaultHeight;
   private ReadService data;
-  private ImageView smallMonsterAvatar;
-  private Image smallMonsterImage;
-  private ImageView mediumMonsterAvatar;
-  private Image mediumMonsterImage;
-  private ImageView normalBulletAvatar;
-  private Image normalBulletImage;
-  private double radius;
-  private ImageView heroesAvatar;
+  private ImageView smallMonsterAvatar,mediumMonsterAvatar,normalBulletAvatar,heroesAvatar;
+  private Image mediumMonsterImage,smallMonsterImage,normalBulletImage;
+  
   private Heroes heroes = new Heroes();
-  private ArrayList<Image> listHeroesImage;
   private ArrayList<SmallMonster> smallMonsters;
   private ArrayList<MediumMonster> mediumMonsters;
   private ArrayList<BulletService>bullets,monsterBullets;
 
-  private double xShrink,yShrink,shrink,xModifier,yModifier,heroesScale;
+  private double xShrink,yShrink,shrink,xModifier,yModifier,radius;
 
   public Viewer(){}
   
@@ -161,7 +155,6 @@ public class Viewer implements ViewerService, RequireReadService{
         normalBulletAvatar.setPreserveRatio(true);
         panel.getChildren().addAll(normalBulletAvatar);
       }
-
     return panel;
   }
 

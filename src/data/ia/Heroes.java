@@ -5,6 +5,7 @@ import tools.Position;
 
 public class Heroes extends Personnage {
 
+
 	@Override
 	public Position getPosition() {
 		return position;

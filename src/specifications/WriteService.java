@@ -13,6 +13,7 @@ import data.ia.SmallMonster;
 public interface WriteService {
   public void setHeroesPosition(Position p);
   public void setStepNumber(int n);
+  public void setPlayerName(String playerName);
   
   public void addSmallMonster(Position p);
   public void addMediumMonster(Position p);

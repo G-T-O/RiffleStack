@@ -236,4 +236,10 @@ public class Data implements DataService {
 		this.monsterBullets = monsterBullet;
 	}
 
+	@Override
+	public void setPlayerName(String playerName) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
