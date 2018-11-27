@@ -14,12 +14,15 @@ import data.ia.SmallMonster;
 public interface ReadService {
   public Position getHeroesPosition();
   public Position getMediumMonsterPosition(MediumMonster mediumMonster);
+  public Position getBossMonsterPosition();
   public double getHeroesWidth();
   public double getHeroesHeight();
   public double getSmallMonsterWidth();
   public double getSmallMonsterHeight();
   public double getMediumMonsterWidth();
   public double getMediumMonsterHeight();
+  public double getBossMonsterWidth();
+  public double getBossMonsterHeight();
   public double getBulletWidth();
   public double getBulletHeight();
   public double getMonsterBulletWidth();

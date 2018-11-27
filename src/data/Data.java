@@ -17,14 +17,12 @@ import data.ia.Boss;
 import java.util.ArrayList;
 
 public class Data implements DataService {
-	private Position heroesPosition;
-	private Position mediumMonsterPosition;
+	private Position heroesPosition,mediumMonsterPosition,bossMonsterPosition;
 	private int stepNumber, score, life;
 	private ArrayList<SmallMonster> smallMonsters;
 	private ArrayList<MediumMonster> mediumMonsters;
 	private Boss bossMonsters;
-	private ArrayList<BulletService> bullets;
-	private ArrayList<BulletService> monsterBullets;
+	private ArrayList<BulletService> bullets,monsterBullets;
 	private double heroesWidth, heroesHeight, smallMonsterWidth, smallMonsterHeight, mediumMonsterHeight,
 			mediumMonsterWidth;
 	private Sound.SOUND sound;
@@ -190,6 +188,11 @@ public class Data implements DataService {
 	public double getMediumMonsterHeight() {
 		return mediumMonsterHeight;
 	}
+	
+	@Override
+	public Position getMediumMonsterPosition(MediumMonster mediumMonster) {
+		return mediumMonster.getPosition();
+	}
 
 	@Override
 	public Boss getMonsterBoss() {
@@ -207,9 +210,20 @@ public class Data implements DataService {
 	}
 
 	@Override
-	public Position getMediumMonsterPosition(MediumMonster mediumMonster) {
-		return mediumMonster.getPosition();
+	public double getBossMonsterWidth() {
+		return HardCodedParameters.bossMonsterWidth;
 	}
+
+	@Override
+	public double getBossMonsterHeight() {
+		return HardCodedParameters.bossMonsterHeight;
+	}
+	
+	@Override
+	public Position getBossMonsterPosition() {
+		return bossMonsters.getPosition();
+	}
+
 
 	@Override
 	public double getMonsterBulletWidth() {
@@ -235,11 +249,13 @@ public class Data implements DataService {
 	public void setMonsterBullets(ArrayList<BulletService> monsterBullet) {
 		this.monsterBullets = monsterBullet;
 	}
-
+	
 	@Override
 	public void setPlayerName(String playerName) {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 
 }

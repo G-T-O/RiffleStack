@@ -15,6 +15,7 @@ import specifications.CharacterService;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import data.ia.Boss;
 import data.ia.MediumMonster;
 import data.ia.SmallMonster;
 
@@ -38,9 +39,15 @@ public class Engine implements EngineService, RequireDataService {
 	private DataService data;
 	private User.COMMAND command;
 	private Random gen;
-	private boolean moveLeft, moveRight, moveUp, moveDown;
+	private boolean moveLeft, moveRight, moveUp, moveDown,bossMoveUp=true;
 	private double heroesVX, heroesVY;
 	private int smallMonsterY, mediumMonsterY;
+	private boolean bossIsAlive = false;
+	private	ArrayList<SmallMonster> smallMonsters ;
+	private ArrayList<MediumMonster> mediumMonsters ;
+	private ArrayList<BulletService> bullets ,monsterBullets;
+	private Boss bossMonster;
+
 
 	public Engine() {
 	}
@@ -76,17 +83,34 @@ public class Engine implements EngineService, RequireDataService {
 					spamMediumMonster = 30;
 					spawnMediumMonster();
 				}
+				if ((data.getScore() > 0) && (!bossIsAlive)) {
+					spawnBossMonster();
+				}
+
+				if (bossIsAlive) {
+					bossMove(bossMonster);
+					if (randomNum.nextInt(100) < 10) {
+						data.addMonsterBullets(new Position(data.getBossMonsterPosition().x,data.getBossMonsterPosition().y+data.getBossMonsterHeight()/2-20));
+						
+						data.addMonsterBullets(new Position(data.getBossMonsterPosition().x,data.getBossMonsterPosition().y+data.getBossMonsterHeight()/2));
+						
+						data.addMonsterBullets(new Position(data.getBossMonsterPosition().x,data.getBossMonsterPosition().y+data.getBossMonsterHeight()/2+20));
+						
+						data.setSoundEffect(Sound.SOUND.HeroesShoot);
+					}
+					
+				}
+
 				spamMediumMonster--;
 				mediumMonsterY = 50 + randomNum.nextInt(400);
 				smallMonsterY = 50 + randomNum.nextInt(400);
 				updateSpeedHeroes();
 				updateCommandHeroes();
 				updatePositionHeroes();
-
-				ArrayList<SmallMonster> smallMonsters = new ArrayList<SmallMonster>();
-				ArrayList<MediumMonster> mediumMonsters = new ArrayList<MediumMonster>();
-				ArrayList<BulletService> bullets = new ArrayList<BulletService>();// Heroes
-				ArrayList<BulletService> monsterBullets = new ArrayList<BulletService>();
+				smallMonsters = new ArrayList<SmallMonster>();
+				mediumMonsters = new ArrayList<MediumMonster>();
+				bullets = new ArrayList<BulletService>();// Heroes
+				monsterBullets = new ArrayList<BulletService>();
 
 				data.setSoundEffect(Sound.SOUND.None);
 
@@ -193,7 +217,6 @@ public class Engine implements EngineService, RequireDataService {
 		if (c == User.COMMAND.DOWN)
 			moveDown = true;
 		if (c == User.COMMAND.SPACE) {
-
 			data.addBullets(new Position(data.getHeroesPosition().x + 120, data.getHeroesPosition().y + 20));
 			data.setSoundEffect(Sound.SOUND.HeroesShoot);
 		}
@@ -245,15 +268,27 @@ public class Engine implements EngineService, RequireDataService {
 	}
 
 	private void spawnSmallMonster() {
-		if (spam <= 0) {
-			spam = 5;
-			data.addSmallMonster(new Position(800, smallMonsterY));
+		if (!bossIsAlive) {
+			if (spam <= 0) {
+				spam = 5;
+				data.addSmallMonster(new Position(800, smallMonsterY));
+			}
+			spam--;
 		}
-		spam--;
 	}
 
 	private void spawnMediumMonster() {
-		data.addMediumMonster(new Position(800, mediumMonsterY));
+		if (!bossIsAlive) {
+			data.addMediumMonster(new Position(800, mediumMonsterY));
+		}
+	}
+
+	private void spawnBossMonster() {
+		if (!bossIsAlive) {
+			data.addBossMonster(new Position(800, mediumMonsterY));
+			bossMonster=data.getMonsterBoss();
+			bossIsAlive = true;
+		}
 	}
 
 	private void moveLeft(CharacterService p) {
@@ -268,7 +303,19 @@ public class Engine implements EngineService, RequireDataService {
 	private void moveUp(CharacterService p) {
 		p.setPosition(new Position(p.getPosition().x, p.getPosition().y - smallMonsterStep));
 	}
+	
+	private void bossMove(CharacterService p) {
 
+		if (data.getBossMonsterPosition().y+data.getBossMonsterHeight()/2 < data.getHeroesPosition().y) {
+			moveDown(p);
+		}else if(data.getBossMonsterPosition().y+data.getBossMonsterHeight()/2 <= data.getHeroesPosition().y+20 
+				&& data.getBossMonsterPosition().y+data.getBossMonsterHeight()/2 >= data.getHeroesPosition().y-20) {
+		}
+		else {
+			moveUp(p);
+		}
+	}
+	
 	private void moveDown(CharacterService p) {
 		p.setPosition(new Position(p.getPosition().x, p.getPosition().y + smallMonsterStep));
 	}

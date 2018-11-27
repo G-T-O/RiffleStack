@@ -13,7 +13,7 @@ public class HardCodedParameters {
   
   public static final Image smallMonsterImage = new Image("file:src/images/monsters/smallMonster.png"); 
   public static final Image mediumMonsterImage = new Image("file:src/images/monsters/mediumMonster.png"); 
-  public static final Image bossImage = new Image("file:src/images/monsters/boss.png");
+  public static final Image bossImage = new Image("file:src/images/monsters/boss1.png");
   public static final Image heroesImage = new Image("file:src/images/heroes/SS1_1.png");
   public static final Image bulletImage = new Image("file:src/images/bullets/normalBullet.png");
   

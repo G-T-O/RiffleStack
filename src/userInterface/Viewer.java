@@ -21,6 +21,7 @@ import javafx.geometry.Rectangle2D;
 
 import java.util.ArrayList;
 
+import data.ia.Boss;
 import data.ia.Heroes;
 import data.ia.MediumMonster;
 import data.ia.SmallMonster;
@@ -30,10 +31,11 @@ public class Viewer implements ViewerService, RequireReadService{
   private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
                               defaultMainHeight=HardCodedParameters.defaultHeight;
   private ReadService data;
-  private ImageView smallMonsterAvatar,mediumMonsterAvatar,normalBulletAvatar,heroesAvatar;
-  private Image mediumMonsterImage,smallMonsterImage,normalBulletImage;
+  private ImageView smallMonsterAvatar,mediumMonsterAvatar,normalBulletAvatar,bossMonsterAvatar,heroesAvatar;
+  private Image bossMonsterImage,mediumMonsterImage,smallMonsterImage,normalBulletImage;
   
   private Heroes heroes = new Heroes();
+  private Boss bossMonster;
   private ArrayList<SmallMonster> smallMonsters;
   private ArrayList<MediumMonster> mediumMonsters;
   private ArrayList<BulletService>bullets,monsterBullets;
@@ -100,10 +102,23 @@ public class Viewer implements ViewerService, RequireReadService{
     
     smallMonsters = data.getSmallMonster();
     mediumMonsters = data.getMediumMonster();
+    bossMonster = data.getMonsterBoss();
     bullets = data.getBullets();
     monsterBullets = data.getMonsterBullet();
+
     CharacterService p;
     BulletService b;
+   try {
+    bossMonsterImage = new Image("file:src/images/monsters/boss1.png");
+    bossMonsterAvatar = new ImageView(bossMonsterImage);
+    bossMonsterAvatar.setTranslateX(shrink*bossMonster.getPosition().x+shrink*xModifier-radius);
+    bossMonsterAvatar.setTranslateY(shrink*bossMonster.getPosition().y+shrink*yModifier-radius);
+    bossMonsterAvatar.setFitHeight(data.getBossMonsterHeight()*shrink);
+    bossMonsterAvatar.setPreserveRatio(true);
+    panel.getChildren().addAll(bossMonsterAvatar);
+    }catch(Exception e) {
+    	
+    }
     
     for (int i=0; i<monsterBullets.size();i++) {
     	b = monsterBullets.get(i);

@@ -32,12 +32,10 @@ public class MainStage extends Application {
 	private static Thread t;
 
 	public MainStage(Stage stage) {
-
 		this.stage = stage;
 		data = new Data();
 		engine = new Engine();
 		viewer = new Viewer();
-
 		((Engine) engine).bindDataService(data);
 		((Viewer) viewer).bindReadService(data);
 		data.init();
@@ -46,9 +44,7 @@ public class MainStage extends Application {
 	}
 
 	public void StartMainStage() {
-
 		final Scene scene = new Scene(((Viewer) viewer).getPanel());
-
 		scene.setFill(Color.CORNFLOWERBLUE);
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override

@@ -17,7 +17,7 @@ public class Boss extends Personnage {
 
 	@Override
 	public CharacterService.MOVE getAction() {
-		return CharacterService.MOVE.LEFT;
+		return CharacterService.MOVE.UP;
 	}
 
 	@Override
