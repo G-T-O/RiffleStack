@@ -8,6 +8,7 @@ import specifications.RequireReadService;
 
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
@@ -26,16 +27,15 @@ public class StartViewer implements ViewerService, RequireReadService {
 	private static final double defaultMainWidth = HardCodedParameters.defaultWidth,
 			defaultMainHeight = HardCodedParameters.defaultHeight;
 	private ReadService data;
-	private Button btn;
+	private Button btn,btnLeft,btnRight;
 	private Group panel;
 	private Text greets;
 	private double xShrink, yShrink, shrink, xModifier, yModifier, radius;
-	private Image imgStart;
-	private ImageView imgStartView;
+	private Image imgStart,imgHeroes,btnLeftArrow,btnRightArrow;
+	private ImageView imgStartView,heroesAvatar;
 	private Label labName;
 	private TextField txtName;
-	//private HBox hb = new HBox();
-
+	private int choice=1,maxHeroes=3;
 	public StartViewer() {
 	}
 
@@ -60,8 +60,8 @@ public class StartViewer implements ViewerService, RequireReadService {
 		yModifier = .01 * shrink * defaultMainHeight;
 
 		// Yucky hard-conding
-		greets = new Text(-0.1 * shrink * defaultMainHeight + .5 * shrink * defaultMainWidth,
-				-0.1 * shrink * 1 + shrink * 40, "Bienvenue");
+		greets = new Text(-0.12 * shrink * defaultMainHeight + .5 * shrink * defaultMainWidth,
+				-0.1 * shrink * 1 + shrink * 30, "Bienvenue");
 		greets.setFont(new Font(.05 * shrink * defaultMainHeight));
 
 		radius = .5 * Math.min(shrink * data.getSmallMonsterWidth(), shrink * data.getSmallMonsterHeight());
@@ -72,17 +72,40 @@ public class StartViewer implements ViewerService, RequireReadService {
 		imgStartView.setFitHeight(data.getSmallMonsterHeight() * shrink);
 		imgStartView.setPreserveRatio(true);
 
+		
+		imgHeroes = new Image("file:src/images/heroes/SS"+choice+"_1.png");
+		heroesAvatar = new ImageView(imgHeroes);
+		heroesAvatar.setTranslateX(shrink * 348 + shrink * xModifier - radius);
+		heroesAvatar.setTranslateY(shrink * 275 + shrink * yModifier - radius);
+		heroesAvatar.setFitHeight(data.getHeroesHeight() * shrink);
+		heroesAvatar.setPreserveRatio(true);
+		
+
+
+		btnLeftArrow = new Image("file:src/images/leftArrow.png");
+		btnLeft = new Button(null, new ImageView(btnLeftArrow));
+		btnLeft.setTranslateX(shrink * 280 + shrink * xModifier - radius);
+		btnLeft.setTranslateY(shrink * 275 + shrink * yModifier - radius);
+		
+		btnRightArrow = new Image("file:src/images/rightArrow.png");
+		btnRight = new Button(null, new ImageView(btnRightArrow));
+		btnRight.setTranslateX(shrink * 450 + shrink * xModifier - radius);
+		btnRight.setTranslateY(shrink * 275 + shrink * yModifier - radius);
+		
 		labName = new Label("Name");
-		labName.setTranslateX(shrink * 300 + shrink * xModifier - radius);
-		labName.setTranslateY(shrink * 300 + shrink * yModifier - radius);
+		labName.setTranslateX(shrink * 270 + shrink * xModifier - radius);
+		labName.setTranslateY(shrink * 375 + shrink * yModifier - radius);
+		
 		txtName = new TextField();
 		txtName.setPromptText("Enter your name.");
 		txtName.setPrefColumnCount(10);
-		txtName.setTranslateX(shrink * 350 + shrink * xModifier - radius);
-		txtName.setTranslateY(shrink * 300 + shrink * yModifier - radius);
+		txtName.setTranslateX(shrink * 330 + shrink * xModifier - radius);
+		txtName.setTranslateY(shrink * 375 + shrink * yModifier - radius);
+		
 		btn = new Button("Start");
-		btn.setLayoutX(400);
-		btn.setLayoutY(400);
+		btn.setLayoutX(380);
+		btn.setLayoutY(450);
+		
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -90,8 +113,32 @@ public class StartViewer implements ViewerService, RequireReadService {
 				Main.runMainStage();
 			}
 		});
+		
+		btnLeft.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if(choice==1) {
+					choice=maxHeroes;
+				}else {
+					choice--;
+				}
+				Main.refresh();
+			}
+		});
+		
+		btnRight.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if(choice==3) {
+					choice=1;
+				}else {
+					choice++;
+				}
+				Main.refresh();
+			}
+		});
 		panel = new Group();
-		panel.getChildren().addAll(greets, btn,imgStartView,labName,txtName);
+		panel.getChildren().addAll(greets, btn,imgStartView,labName,txtName,heroesAvatar,btnRight,btnLeft);
 		return panel;
 	}
 

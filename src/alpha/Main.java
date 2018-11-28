@@ -50,6 +50,16 @@ public class Main extends Application {
 		stage.show();
 		stg = stage;
 	}
+	
+	public static void refresh() {
+		final Scene scene = new Scene(((StartViewer) startViewer).getPanel());
+		scene.setFill(Color.CORNFLOWERBLUE);
+		stg.setScene(scene);
+		stg.setWidth(HardCodedParameters.defaultWidth);
+		stg.setHeight(HardCodedParameters.defaultHeight);
+		stg.show();
+		stg = stg;
+	}
 
 	// ---ARGUMENTS---//
 	private static void readArguments(String[] args) {
