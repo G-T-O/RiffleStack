@@ -21,7 +21,6 @@ public class Main extends Application {
 	private static StartViewer startViewer;
 	private static MainStage mainStage;
 	private static Stage stg;
-
 	// ---EXECUTABLE---/
 
 	public static void main(String[] args) {
@@ -33,9 +32,10 @@ public class Main extends Application {
 		launch(args);
 	}
 
-	public static void runMainStage() {
+	public static void runMainStage(int choice) {
+
 		stg.close();
-		mainStage = new MainStage(stg);
+		mainStage = new MainStage(stg,choice);
 		mainStage.StartMainStage();
 	}
 

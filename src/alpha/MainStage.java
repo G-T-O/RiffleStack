@@ -31,7 +31,7 @@ public class MainStage extends Application {
 	private static Stage stage;
 	private static Thread t;
 
-	public MainStage(Stage stage) {
+	public MainStage(Stage stage, int choice) {
 		this.stage = stage;
 		data = new Data();
 		engine = new Engine();
@@ -41,6 +41,7 @@ public class MainStage extends Application {
 		data.init();
 		engine.init();
 		viewer.init();
+		data.setHeroesChoice(choice);
 	}
 
 	public void StartMainStage() {

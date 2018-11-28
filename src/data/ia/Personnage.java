@@ -16,7 +16,11 @@ public abstract class Personnage implements CharacterService {
 	public Position getPosition() {
 		return position;
 	}
-
+	
+	public void setImage(int choice) {
+		sprite.setImage(choice);
+	}
+	
 	public abstract CharacterService.MOVE getAction();
 
 	public abstract void setPosition(Position p);

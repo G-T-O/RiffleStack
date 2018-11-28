@@ -17,6 +17,7 @@ public interface ReadService {
   public Position getBossMonsterPosition();
   public double getHeroesWidth();
   public double getHeroesHeight();
+  public int getHeroesChoice();
   public double getSmallMonsterWidth();
   public double getSmallMonsterHeight();
   public double getMediumMonsterWidth();

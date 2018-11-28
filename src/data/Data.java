@@ -26,6 +26,7 @@ public class Data implements DataService {
 	private double heroesWidth, heroesHeight, smallMonsterWidth, smallMonsterHeight, mediumMonsterHeight,
 			mediumMonsterWidth;
 	private Sound.SOUND sound;
+	private int heroesChoice;
 
 	public Data() {
 	}
@@ -58,7 +59,15 @@ public class Data implements DataService {
 	public double getHeroesWidth() {
 		return heroesWidth;
 	}
+	@Override
+	public int getHeroesChoice() {
+		return heroesChoice;
+	}
 
+	@Override
+	public void setHeroesChoice(int choice) {
+		heroesChoice=choice;
+	}
 	@Override
 	public double getHeroesHeight() {
 		return heroesHeight;
@@ -255,6 +264,10 @@ public class Data implements DataService {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	
+	
 
 
 
