@@ -17,12 +17,12 @@ import data.ia.Boss;
 import java.util.ArrayList;
 
 public class Data implements DataService {
-	private Position heroesPosition,mediumMonsterPosition,bossMonsterPosition;
-	private int stepNumber, score, life;
+	private Position heroesPosition;
+	private int stepNumber, smallMonsterKilled, mediumMonsterKilled, score, life;
 	private ArrayList<SmallMonster> smallMonsters;
 	private ArrayList<MediumMonster> mediumMonsters;
 	private Boss bossMonsters;
-	private ArrayList<BulletService> bullets,monsterBullets;
+	private ArrayList<BulletService> bullets, monsterBullets;
 	private double heroesWidth, heroesHeight, smallMonsterWidth, smallMonsterHeight, mediumMonsterHeight,
 			mediumMonsterWidth;
 	private Sound.SOUND sound;
@@ -40,6 +40,8 @@ public class Data implements DataService {
 		monsterBullets = new ArrayList<BulletService>();
 		stepNumber = 0;
 		score = 0;
+		mediumMonsterKilled = 0;
+		smallMonsterKilled = 0;
 		life = 10;
 		heroesHeight = HardCodedParameters.heroesHeight;
 		heroesWidth = HardCodedParameters.heroesWidth;
@@ -59,6 +61,7 @@ public class Data implements DataService {
 	public double getHeroesWidth() {
 		return heroesWidth;
 	}
+
 	@Override
 	public int getHeroesChoice() {
 		return heroesChoice;
@@ -66,8 +69,9 @@ public class Data implements DataService {
 
 	@Override
 	public void setHeroesChoice(int choice) {
-		heroesChoice=choice;
+		heroesChoice = choice;
 	}
+
 	@Override
 	public double getHeroesHeight() {
 		return heroesHeight;
@@ -148,9 +152,21 @@ public class Data implements DataService {
 		this.life -= life;
 	}
 
+
+
 	@Override
 	public void addSmallMonster(Position p) {
 		smallMonsters.add(new SmallMonster(p));
+	}
+
+	@Override
+	public int getCountSmallMonsterKilled() {
+		return smallMonsterKilled;
+	}
+
+	@Override
+	public void smallMonsterKilled() {
+		smallMonsterKilled ++;
 	}
 
 	@Override
@@ -197,10 +213,20 @@ public class Data implements DataService {
 	public double getMediumMonsterHeight() {
 		return mediumMonsterHeight;
 	}
-	
+
 	@Override
 	public Position getMediumMonsterPosition(MediumMonster mediumMonster) {
 		return mediumMonster.getPosition();
+	}
+
+	@Override
+	public int getCountMediumMonsterKilled() {
+		return mediumMonsterKilled;
+	}
+
+	@Override
+	public void mediumMonsterKilled() {
+		mediumMonsterKilled ++;
 	}
 
 	@Override
@@ -227,12 +253,11 @@ public class Data implements DataService {
 	public double getBossMonsterHeight() {
 		return HardCodedParameters.bossMonsterHeight;
 	}
-	
+
 	@Override
 	public Position getBossMonsterPosition() {
 		return bossMonsters.getPosition();
 	}
-
 
 	@Override
 	public double getMonsterBulletWidth() {
@@ -258,17 +283,19 @@ public class Data implements DataService {
 	public void setMonsterBullets(ArrayList<BulletService> monsterBullet) {
 		this.monsterBullets = monsterBullet;
 	}
-	
+
 	@Override
 	public void setPlayerName(String playerName) {
-		// TODO Auto-generated method stub
-		
 	}
 
+	@Override
+	public void removeBossLife(int life,Boss boss) {
+	boss.removeLife(life);
+	}
 
-	
-	
-
-
+	@Override
+	public int getBossLife(Boss boss) {
+	return boss.getLife();
+	}
 
 }

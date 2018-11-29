@@ -9,6 +9,7 @@ import specifications.BulletService;
 import specifications.CharacterService;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -26,7 +27,7 @@ public class Viewer implements ViewerService, RequireReadService {
 	private static final double defaultMainWidth = HardCodedParameters.defaultWidth,
 			defaultMainHeight = HardCodedParameters.defaultHeight;
 	private ReadService data;
-	private ImageView smallMonsterAvatar, mediumMonsterAvatar, normalBulletAvatar, bossMonsterAvatar, heroesAvatar;
+	private ImageView spaceBGView= new ImageView(new Image("file:src/images/SpaceBackground.png")), smallMonsterAvatar, mediumMonsterAvatar, normalBulletAvatar, bossMonsterAvatar, heroesAvatar;
 	private Image bossMonsterImage, mediumMonsterImage, smallMonsterImage, normalBulletImage;
 
 	private Heroes heroes = new Heroes();
@@ -59,34 +60,52 @@ public class Viewer implements ViewerService, RequireReadService {
 		shrink = Math.min(xShrink, yShrink);
 		xModifier = .01 * shrink * defaultMainHeight;
 		yModifier = .01 * shrink * defaultMainHeight;
+		
+
+		spaceBGView.setTranslateX(0);
+		spaceBGView.setTranslateY(0);
+		spaceBGView.setPreserveRatio(true);
+		spaceBGView.toBack();
 
 		// Yucky hard-conding
 		heroes.setImage(data.getHeroesChoice());
 		heroesAvatar = new ImageView(heroes.getImage());
 		Rectangle map = new Rectangle(-2 * xModifier + shrink * defaultMainWidth,
-				-.2 * shrink * defaultMainHeight + shrink * defaultMainHeight);
-		map.setFill(Color.WHITE);
-		map.setStroke(Color.DIMGRAY);
-		map.setStrokeWidth(.01 * shrink * defaultMainHeight);
-		map.setArcWidth(.04 * shrink * defaultMainHeight);
-		map.setArcHeight(.04 * shrink * defaultMainHeight);
-		map.setTranslateX(xModifier);
-		map.setTranslateY(yModifier);
+				-.2 * shrink * defaultMainHeight + shrink * defaultMainHeight);	
+		
+		String topText =
+			     "-fx-text-fill: #107BED;"
+   		  +  "-fx-effect: dropshadow( one-pass-box , rgba(	230, 241, 253,0.9) , 1, 5.0 , 0 , 1 );"
+			  +  "-fx-font-size: 24px;";
+		
+		
+		Text name = new Text(-0.1 * shrink * defaultMainHeight + .1 * shrink * defaultMainWidth,
+				-0.1 * shrink * 1 + shrink * 40, "Player: Pierre");
+		name.setFont(new Font(.05 * shrink * defaultMainHeight));
+		name.setStyle(topText);
+		name.setFill(Color.WHITE);
 
-		Text greets = new Text(-0.1 * shrink * defaultMainHeight + .5 * shrink * defaultMainWidth,
-				-0.1 * shrink * 1 + shrink * 40, "Round 1");
-		greets.setFont(new Font(.05 * shrink * defaultMainHeight));
-
-		Text score = new Text(-0.1 * shrink * defaultMainHeight + .3 * shrink * defaultMainWidth,
+		Text score = new Text(-0.1 * shrink * defaultMainHeight + .45 * shrink * defaultMainWidth,
 				-0.1 * shrink * 1 + shrink * 40, "Score: " + data.getScore());
 		score.setFont(new Font(.05 * shrink * defaultMainHeight));
+		score.setStyle(topText);
+		score.setFill(Color.WHITE);
 
-		Text life = new Text(-0.1 * shrink * defaultMainHeight + .1 * shrink * defaultMainWidth,
-				-0.1 * shrink * 1 + shrink * 40, "Vies: " + data.getLife());
+		Text life = new Text(-0.1 * shrink * defaultMainHeight + .65 * shrink * defaultMainWidth,
+				-0.1 * shrink * 1 + shrink * 40, "Life: " + data.getLife());
 		life.setFont(new Font(.05 * shrink * defaultMainHeight));
+		life.setStyle(topText);
+		life.setFill(Color.WHITE);
+
+		Text greets = new Text(-0.1 * shrink * defaultMainHeight + .9 * shrink * defaultMainWidth,
+				-0.1 * shrink * 1 + shrink * 40, "Round 1");
+		greets.setFont(new Font(.05 * shrink * defaultMainHeight));
+		greets.setStyle(topText);
+		greets.setFill(Color.WHITE);
+
 
 		Group panel = new Group();
-		panel.getChildren().addAll(map, greets, score, life, heroesAvatar);
+		panel.getChildren().addAll(spaceBGView, name, greets, score, life, heroesAvatar);
 		heroesAvatar.setTranslateX(shrink * data.getHeroesPosition().x + shrink * xModifier - radius);
 		heroesAvatar.setTranslateY(shrink * data.getHeroesPosition().y + shrink * yModifier - radius);
 		heroesAvatar.setFitHeight(data.getHeroesHeight() * shrink);
@@ -101,6 +120,7 @@ public class Viewer implements ViewerService, RequireReadService {
 		CharacterService p;
 		BulletService b;
 		try {
+			if(data.getBossLife(bossMonster)>0) {
 			bossMonsterImage = new Image("file:src/images/monsters/boss1.png");
 			bossMonsterAvatar = new ImageView(bossMonsterImage);
 			bossMonsterAvatar.setTranslateX(shrink * bossMonster.getPosition().x + shrink * xModifier - radius);
@@ -108,6 +128,7 @@ public class Viewer implements ViewerService, RequireReadService {
 			bossMonsterAvatar.setFitHeight(data.getBossMonsterHeight() * shrink);
 			bossMonsterAvatar.setPreserveRatio(true);
 			panel.getChildren().addAll(bossMonsterAvatar);
+			}
 		} catch (Exception e) {
 
 		}

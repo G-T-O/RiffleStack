@@ -1,4 +1,3 @@
-
 package alpha;
 
 import tools.HardCodedParameters;
@@ -12,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-public class Main extends Application {
+	public class Main extends Application {
 	// ---HARD-CODED-PARAMETERS---//
 	private static String fileName = HardCodedParameters.defaultParamFileName;
 
@@ -35,7 +34,7 @@ public class Main extends Application {
 	public static void runMainStage(int choice) {
 
 		stg.close();
-		mainStage = new MainStage(stg,choice);
+		mainStage = new MainStage(stg, choice);
 		mainStage.StartMainStage();
 	}
 
@@ -50,7 +49,7 @@ public class Main extends Application {
 		stage.show();
 		stg = stage;
 	}
-	
+
 	public static void refresh() {
 		final Scene scene = new Scene(((StartViewer) startViewer).getPanel());
 		scene.setFill(Color.CORNFLOWERBLUE);

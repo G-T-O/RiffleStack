@@ -38,4 +38,7 @@ public interface ReadService {
   public ArrayList <BulletService>getMonsterBullet();
   public ArrayList <BulletService>getBullets();
   public Sound.SOUND getSoundEffect();
+  public int getCountSmallMonsterKilled();
+  public int getCountMediumMonsterKilled();
+  public int getBossLife(Boss boss);
 }

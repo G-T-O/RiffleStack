@@ -4,8 +4,17 @@ import specifications.CharacterService;
 import tools.Position;
 
 public class Boss extends Personnage {
-	private int life;
+	private int life=1;
 
+	
+	public int getLife() {
+		return life;
+	}
+	
+	public void removeLife(int life) {
+		this.life=this.life-life;
+	}
+	
 	public Boss(Position p) {
 		position = p;
 	}

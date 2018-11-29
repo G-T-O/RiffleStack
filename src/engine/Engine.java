@@ -38,7 +38,8 @@ public class Engine implements EngineService, RequireDataService {
 	private ArrayList<MediumMonster> mediumMonsters;
 	private ArrayList<BulletService> bullets, monsterBullets;
 	private Boss bossMonster;
-
+	private int normalyArriveBoss=30;
+	
 	public Engine() {
 	}
 
@@ -63,7 +64,8 @@ public class Engine implements EngineService, RequireDataService {
 	public void start() {
 		engineClock.schedule(new TimerTask() {
 			public void run() {
-
+				
+					
 				if (gen.nextInt(10) < 3) {
 					spawnSmallMonster();
 				}
@@ -76,7 +78,8 @@ public class Engine implements EngineService, RequireDataService {
 					spawnBossMonster();
 				}
 
-				if (bossIsAlive) {
+				if (bossIsAlive && data.getBossLife(bossMonster)>0) {
+
 					bossMove(bossMonster);
 					if (randomNum.nextInt(100) < 10) {
 						data.addMonsterBullets(new Position(data.getBossMonsterPosition().x,
@@ -87,12 +90,16 @@ public class Engine implements EngineService, RequireDataService {
 
 						data.addMonsterBullets(new Position(data.getBossMonsterPosition().x,
 								data.getBossMonsterPosition().y + data.getBossMonsterHeight() / 2 + 20));
+						if(data.getBossLife(bossMonster)<100) {
+							data.addMonsterBullets(new Position(data.getBossMonsterPosition().x,
+									data.getBossMonsterPosition().y + data.getBossMonsterHeight() / 2 - 40));
 
+							data.addMonsterBullets(new Position(data.getBossMonsterPosition().x,
+									data.getBossMonsterPosition().y + data.getBossMonsterHeight() / 2 + 40));
+						}
 						data.setSoundEffect(Sound.SOUND.HeroesShoot);
 					}
-
 				}
-
 				spamMediumMonster--;
 				mediumMonsterY = 50 + randomNum.nextInt(400);
 				smallMonsterY = 50 + randomNum.nextInt(400);
@@ -103,13 +110,14 @@ public class Engine implements EngineService, RequireDataService {
 				mediumMonsters = new ArrayList<MediumMonster>();
 				bullets = new ArrayList<BulletService>();// Heroes
 				monsterBullets = new ArrayList<BulletService>();
-
 				data.setSoundEffect(Sound.SOUND.None);
+				
+				
 
 				for (SmallMonster p : data.getSmallMonster()) {
 					if (p.getAction() == CharacterService.MOVE.LEFT)
 						moveLeft(p);
-					smallMonsters.add(p);
+						smallMonsters.add(p);
 					if (collisionHeroesMonster(p)) {
 						data.setSoundEffect(Sound.SOUND.MonsterDestroyed);
 						data.removeLife(1);
@@ -141,7 +149,7 @@ public class Engine implements EngineService, RequireDataService {
 					}
 				}
 				try {
-					for (BulletService b : data.getMonsterBullet()) { // MediumMonsterBullet -1
+					for (BulletService b : data.getMonsterBullet()) {
 						monsterBullets.add(b);
 						bulletMoveLeft(b);
 						if (collisionBulletHeroes(b, data.getHeroesPosition())) {
@@ -158,12 +166,19 @@ public class Engine implements EngineService, RequireDataService {
 					for (BulletService b : data.getBullets()) {
 						bullets.add(b);
 						bulletMoveRight(b);
-
+						if(bossIsAlive) {
+							if(collisionBulletBoss(b,bossMonster)) {
+								data.removeBossLife(1,bossMonster);
+								bullets.remove(b);
+								System.out.println(data.getBossLife(bossMonster));
+							}
+						}
 						for (CharacterService p : data.getSmallMonster()) {
 							if (collisionBulletMonster(b, p)) {
 								data.setSoundEffect(Sound.SOUND.MonsterDestroyed);
 								data.addScore(1);
 								smallMonsters.remove(p);
+								data.smallMonsterKilled();
 								bullets.remove(b);
 							}
 						}
@@ -171,6 +186,7 @@ public class Engine implements EngineService, RequireDataService {
 							if (collisionBulletMonster(b, p)) {
 								data.setSoundEffect(Sound.SOUND.MonsterDestroyed);
 								data.addScore(1);
+								data.mediumMonsterKilled();
 								mediumMonsters.remove(p);
 								bullets.remove(b);
 							}
@@ -183,7 +199,6 @@ public class Engine implements EngineService, RequireDataService {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
 				data.setBullets(bullets);
 				data.setMonsterBullets(monsterBullets);
 				data.setSmallMonsters(smallMonsters);
@@ -285,7 +300,6 @@ public class Engine implements EngineService, RequireDataService {
 
 	private void moveLeft(CharacterService p) {
 		p.setPosition(new Position(p.getPosition().x - smallMonsterStep, p.getPosition().y));
-
 	}
 
 	private void moveRight(CharacterService p) {
@@ -297,7 +311,7 @@ public class Engine implements EngineService, RequireDataService {
 	}
 
 	private void bossMove(CharacterService p) {
-
+		normalyArriveBoss--;
 		if (data.getBossMonsterPosition().y + data.getBossMonsterHeight() / 2 < data.getHeroesPosition().y) {
 			moveDown(p);
 		} else if (data.getBossMonsterPosition().y + data.getBossMonsterHeight() / 2 <= data.getHeroesPosition().y + 20
@@ -305,6 +319,9 @@ public class Engine implements EngineService, RequireDataService {
 						- 20) {
 		} else {
 			moveUp(p);
+		}
+		if(normalyArriveBoss>0) {
+			moveLeft(p);
 		}
 	}
 
@@ -332,7 +349,7 @@ public class Engine implements EngineService, RequireDataService {
 
 	private boolean collisionBulletMonster(BulletService b, CharacterService p) {
 
-		if ((p.getPosition().x <= b.getPosition().x + data.getBulletWidth())
+		if 		  ((p.getPosition().x <= b.getPosition().x + data.getBulletWidth())
 				&& (p.getPosition().x >= b.getPosition().x - data.getBulletWidth())
 				&& (p.getPosition().y <= b.getPosition().y + data.getBulletHeight())
 				&& (p.getPosition().y >= b.getPosition().y - data.getBulletHeight() * 1.5)) {
@@ -340,13 +357,23 @@ public class Engine implements EngineService, RequireDataService {
 		}
 		return false;
 	}
+	private boolean collisionBulletBoss(BulletService b, Boss p) {
+
+		if 		  ((p.getPosition().x  <= b.getPosition().x )
+				&& (p.getPosition().x +data.getBossMonsterWidth() >= b.getPosition().x )
+				&& (p.getPosition().y <= b.getPosition().y )
+				&& (p.getPosition().y +data.getBossMonsterHeight() >= b.getPosition().y )) {
+			return true;
+		}
+		return false;
+	}
 
 	private boolean collisionBulletHeroes(BulletService b, Position position) {
 
-		if ((position.x <= b.getPosition().x + data.getBulletWidth() / 2)
-				&& (position.x >= b.getPosition().x - data.getBulletWidth() * 1.7)
-				&& (position.y <= b.getPosition().y + data.getBulletHeight() / 2)
-				&& (position.y >= b.getPosition().y - data.getHeroesHeight())) {
+		if 		  ((data.getHeroesPosition().x <= b.getPosition().x + data.getBulletWidth())
+				&& (data.getHeroesPosition().x +data.getHeroesWidth()/2 >= b.getPosition().x - data.getBulletWidth())
+				&& (data.getHeroesPosition().y <= b.getPosition().y + data.getBulletHeight())
+				&& (data.getHeroesPosition().y >= b.getPosition().y - data.getHeroesHeight())) {
 			return true;
 		}
 		return false;
