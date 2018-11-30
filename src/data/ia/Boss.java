@@ -4,7 +4,7 @@ import specifications.CharacterService;
 import tools.Position;
 
 public class Boss extends Personnage {
-	private int life=1;
+	private int life=100;
 
 	
 	public int getLife() {

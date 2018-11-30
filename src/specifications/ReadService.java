@@ -41,4 +41,5 @@ public interface ReadService {
   public int getCountSmallMonsterKilled();
   public int getCountMediumMonsterKilled();
   public int getBossLife(Boss boss);
+  public String getPlayerName();
 }

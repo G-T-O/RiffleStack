@@ -74,7 +74,7 @@ public class Engine implements EngineService, RequireDataService {
 					spamMediumMonster = 30;
 					spawnMediumMonster();
 				}
-				if ((data.getScore() > 0) && (!bossIsAlive)) {
+				if ((data.getScore() >= 10) && (!bossIsAlive)) {
 					spawnBossMonster();
 				}
 
@@ -90,7 +90,7 @@ public class Engine implements EngineService, RequireDataService {
 
 						data.addMonsterBullets(new Position(data.getBossMonsterPosition().x,
 								data.getBossMonsterPosition().y + data.getBossMonsterHeight() / 2 + 20));
-						if(data.getBossLife(bossMonster)<100) {
+						if(data.getBossLife(bossMonster)<80) {
 							data.addMonsterBullets(new Position(data.getBossMonsterPosition().x,
 									data.getBossMonsterPosition().y + data.getBossMonsterHeight() / 2 - 40));
 

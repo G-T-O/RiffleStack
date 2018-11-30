@@ -31,10 +31,10 @@ import javafx.scene.media.MediaPlayer;
 		launch(args);
 	}
 
-	public static void runMainStage(int choice) {
+	public static void runMainStage(int choice, String playerName) {
 
 		stg.close();
-		mainStage = new MainStage(stg, choice);
+		mainStage = new MainStage(stg, choice,playerName);
 		mainStage.StartMainStage();
 	}
 

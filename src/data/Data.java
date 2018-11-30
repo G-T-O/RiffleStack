@@ -27,6 +27,7 @@ public class Data implements DataService {
 			mediumMonsterWidth;
 	private Sound.SOUND sound;
 	private int heroesChoice;
+	private String playerName;
 
 	public Data() {
 	}
@@ -286,6 +287,7 @@ public class Data implements DataService {
 
 	@Override
 	public void setPlayerName(String playerName) {
+		this.playerName=playerName;
 	}
 
 	@Override
@@ -296,6 +298,11 @@ public class Data implements DataService {
 	@Override
 	public int getBossLife(Boss boss) {
 	return boss.getLife();
+	}
+	
+	@Override
+	public String getPlayerName() {
+		return playerName;
 	}
 
 }
