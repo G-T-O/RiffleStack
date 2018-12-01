@@ -38,8 +38,8 @@ public class Engine implements EngineService, RequireDataService {
 	private ArrayList<MediumMonster> mediumMonsters;
 	private ArrayList<BulletService> bullets, monsterBullets;
 	private Boss bossMonster;
-	private int normalyArriveBoss=30;
-	
+	private int normalyArriveBoss = 30;
+
 	public Engine() {
 	}
 
@@ -64,8 +64,7 @@ public class Engine implements EngineService, RequireDataService {
 	public void start() {
 		engineClock.schedule(new TimerTask() {
 			public void run() {
-				
-					
+
 				if (gen.nextInt(10) < 3) {
 					spawnSmallMonster();
 				}
@@ -78,7 +77,7 @@ public class Engine implements EngineService, RequireDataService {
 					spawnBossMonster();
 				}
 
-				if (bossIsAlive && data.getBossLife(bossMonster)>0) {
+				if (bossIsAlive && data.getBossLife(bossMonster) > 0) {
 
 					bossMove(bossMonster);
 					if (randomNum.nextInt(100) < 10) {
@@ -90,7 +89,7 @@ public class Engine implements EngineService, RequireDataService {
 
 						data.addMonsterBullets(new Position(data.getBossMonsterPosition().x,
 								data.getBossMonsterPosition().y + data.getBossMonsterHeight() / 2 + 20));
-						if(data.getBossLife(bossMonster)<80) {
+						if (data.getBossLife(bossMonster) < 80) {
 							data.addMonsterBullets(new Position(data.getBossMonsterPosition().x,
 									data.getBossMonsterPosition().y + data.getBossMonsterHeight() / 2 - 40));
 
@@ -111,13 +110,11 @@ public class Engine implements EngineService, RequireDataService {
 				bullets = new ArrayList<BulletService>();// Heroes
 				monsterBullets = new ArrayList<BulletService>();
 				data.setSoundEffect(Sound.SOUND.None);
-				
-				
 
 				for (SmallMonster p : data.getSmallMonster()) {
 					if (p.getAction() == CharacterService.MOVE.LEFT)
 						moveLeft(p);
-						smallMonsters.add(p);
+					smallMonsters.add(p);
 					if (collisionHeroesMonster(p)) {
 						data.setSoundEffect(Sound.SOUND.MonsterDestroyed);
 						data.removeLife(1);
@@ -166,9 +163,9 @@ public class Engine implements EngineService, RequireDataService {
 					for (BulletService b : data.getBullets()) {
 						bullets.add(b);
 						bulletMoveRight(b);
-						if(bossIsAlive) {
-							if(collisionBulletBoss(b,bossMonster)) {
-								data.removeBossLife(1,bossMonster);
+						if (bossIsAlive) {
+							if (collisionBulletBoss(b, bossMonster)) {
+								data.removeBossLife(1, bossMonster);
 								bullets.remove(b);
 								System.out.println(data.getBossLife(bossMonster));
 							}
@@ -320,7 +317,7 @@ public class Engine implements EngineService, RequireDataService {
 		} else {
 			moveUp(p);
 		}
-		if(normalyArriveBoss>0) {
+		if (normalyArriveBoss > 0) {
 			moveLeft(p);
 		}
 	}
@@ -349,7 +346,7 @@ public class Engine implements EngineService, RequireDataService {
 
 	private boolean collisionBulletMonster(BulletService b, CharacterService p) {
 
-		if 		  ((p.getPosition().x <= b.getPosition().x + data.getBulletWidth())
+		if ((p.getPosition().x <= b.getPosition().x + data.getBulletWidth())
 				&& (p.getPosition().x >= b.getPosition().x - data.getBulletWidth())
 				&& (p.getPosition().y <= b.getPosition().y + data.getBulletHeight())
 				&& (p.getPosition().y >= b.getPosition().y - data.getBulletHeight() * 1.5)) {
@@ -357,12 +354,13 @@ public class Engine implements EngineService, RequireDataService {
 		}
 		return false;
 	}
+
 	private boolean collisionBulletBoss(BulletService b, Boss p) {
 
-		if 		  ((p.getPosition().x  <= b.getPosition().x )
-				&& (p.getPosition().x +data.getBossMonsterWidth() >= b.getPosition().x )
-				&& (p.getPosition().y <= b.getPosition().y )
-				&& (p.getPosition().y +data.getBossMonsterHeight() >= b.getPosition().y )) {
+		if ((p.getPosition().x <= b.getPosition().x)
+				&& (p.getPosition().x + data.getBossMonsterWidth() >= b.getPosition().x)
+				&& (p.getPosition().y <= b.getPosition().y)
+				&& (p.getPosition().y + data.getBossMonsterHeight() >= b.getPosition().y)) {
 			return true;
 		}
 		return false;
@@ -370,8 +368,8 @@ public class Engine implements EngineService, RequireDataService {
 
 	private boolean collisionBulletHeroes(BulletService b, Position position) {
 
-		if 		  ((data.getHeroesPosition().x <= b.getPosition().x + data.getBulletWidth())
-				&& (data.getHeroesPosition().x +data.getHeroesWidth()/2 >= b.getPosition().x - data.getBulletWidth())
+		if ((data.getHeroesPosition().x <= b.getPosition().x + data.getBulletWidth())
+				&& (data.getHeroesPosition().x + data.getHeroesWidth() / 2 >= b.getPosition().x - data.getBulletWidth())
 				&& (data.getHeroesPosition().y <= b.getPosition().y + data.getBulletHeight())
 				&& (data.getHeroesPosition().y >= b.getPosition().y - data.getHeroesHeight())) {
 			return true;

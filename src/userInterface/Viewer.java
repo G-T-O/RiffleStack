@@ -56,7 +56,6 @@ public class Viewer implements ViewerService, RequireReadService {
 
 	@Override
 	public Parent getPanel() {
-		
 		shrink = Math.min(xShrink, yShrink);
 		xModifier = .01 * shrink * defaultMainHeight;
 		yModifier = .01 * shrink * defaultMainHeight;
@@ -102,6 +101,7 @@ public class Viewer implements ViewerService, RequireReadService {
 		greets.setStyle(topText);
 		greets.setFill(Color.WHITE);
 
+		//addsAvatar.setPreserveRatio(true);
 		panel = new Group();
 		panel.getChildren().addAll(spaceBGView, name, greets, score, life);
 		if (data.getLife() > 0) {
@@ -138,7 +138,7 @@ public class Viewer implements ViewerService, RequireReadService {
 		for (int i = 0; i < monsterBullets.size(); i++) {
 			b = monsterBullets.get(i);
 			radius = .5 * Math.min(shrink * data.getBulletWidth(), shrink * data.getBulletHeight());
-			normalBulletImage = new Image("file:src/images/bullets/normalBullet.png");
+			normalBulletImage = new Image("file:src/images/bullets/normalMonsterBullet.png");
 			normalBulletAvatar = new ImageView(normalBulletImage);
 			normalBulletAvatar.setTranslateX(shrink * b.getPosition().x + shrink * xModifier - radius);
 			normalBulletAvatar.setTranslateY(shrink * b.getPosition().y + shrink * yModifier - radius);

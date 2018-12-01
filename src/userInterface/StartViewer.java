@@ -136,7 +136,7 @@ public class StartViewer implements ViewerService, RequireReadService {
 			@Override
 			public void handle(ActionEvent event) {
 				txtName.getText();
-				Main.runMainStage(choice,txtName.getText());
+				Main.runMainStage(choice, txtName.getText());
 			}
 		});
 

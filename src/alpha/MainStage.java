@@ -32,7 +32,7 @@ public class MainStage extends Application {
 	private static Thread t;
 
 	public MainStage(Stage stage, int choice, String playerName) {
-		this.stage = stage;
+		MainStage.stage = stage;
 		data = new Data();
 		engine = new Engine();
 		viewer = new Viewer();
@@ -114,36 +114,40 @@ public class MainStage extends Application {
 			@Override
 			public void handle(long l) {
 				scene.setRoot(((Viewer) viewer).getPanel());
-				switch (data.getSoundEffect()) {
-				case MonsterDestroyed:
-					t = new Thread() {
-						public void run() {
-							new MediaPlayer(new Media(getHostServices().getDocumentBase() + "src/sound/waterdrip.mp3"))
-									.play();
-						}
-					};
-					t.start();
-					break;
-				case HeroesGotHit:
-					t = new Thread() {
-						public void run() {
-							new MediaPlayer(new Media(getHostServices().getDocumentBase() + "src/sound/waterdrip.mp3"))
-									.play();
-						}
-					};
-					t.start();
-					break;
-				case HeroesShoot:
-					t = new Thread() {
-						public void run() {
-							new MediaPlayer(
-									new Media(getHostServices().getDocumentBase() + "src/sound/shoot/laser1.mp3"))
-											.play();
-						}
-					};
-					t.start();
-				default:
-					break;
+				if (data.getLife() > 0) {
+					switch (data.getSoundEffect()) {
+					case MonsterDestroyed:
+						t = new Thread() {
+							public void run() {
+								new MediaPlayer(
+										new Media(getHostServices().getDocumentBase() + "src/sound/collide.mp3"))
+												.play();
+							}
+						};
+						t.start();
+						break;
+					case HeroesGotHit:
+						t = new Thread() {
+							public void run() {
+								new MediaPlayer(
+										new Media(getHostServices().getDocumentBase() + "src/sound/collide.mp3"))
+												.play();
+							}
+						};
+						t.start();
+						break;
+					case HeroesShoot:
+						t = new Thread() {
+							public void run() {
+								new MediaPlayer(
+										new Media(getHostServices().getDocumentBase() + "src/sound/shoot/laser1.mp3"))
+												.play();
+							}
+						};
+						t.start();
+					default:
+						break;
+					}
 				}
 			}
 		};
